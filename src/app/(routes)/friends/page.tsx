@@ -1,4 +1,4 @@
-import { PageTitle } from "../pageTitle";
+import { PageTitle } from "../../pageTitle";
 
 const FriendsPage = () => {
   return <PageTitle title="Friends" />;
