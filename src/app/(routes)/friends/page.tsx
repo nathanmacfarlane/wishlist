@@ -1,5 +1,9 @@
 import prisma from "@/lib/db";
 import { PageTitle } from "../../pageTitle";
+import { VStack } from "@/components/ui/vstack";
+import { HStack } from "@/components/ui/hstack";
+import { Button } from "@/components/ui/button";
+import { SearchIcon } from "lucide-react";
 
 type Friend = {
   id: string;
@@ -17,8 +21,13 @@ const FriendsPage = async () => {
   const friends = await getFriends();
 
   return (
-    <div>
-      <PageTitle title="Friends" />
+    <VStack size="sm">
+      <HStack justify="between" className="items-center">
+        <PageTitle title="Friends" />
+        <Button variant="secondary" rightIcon={SearchIcon}>
+          Find Friends
+        </Button>
+      </HStack>
 
       {/* TODO - filter by friends */}
       <ul>
@@ -26,7 +35,7 @@ const FriendsPage = async () => {
           <li key={friend.id}>{friend.firstName}</li>
         ))}
       </ul>
-    </div>
+    </VStack>
   );
 };
 
