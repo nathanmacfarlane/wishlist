@@ -9,6 +9,8 @@ import { PropsWithChildren, useRef, useState } from "react";
 import { Button } from "./button";
 import { HStack } from "./hstack";
 import { UserButton } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { title: "My List", route: "/my-list", Icon: User },
@@ -20,6 +22,10 @@ export type NavigationProps = PropsWithChildren<{}>;
 export const NavigationSidebar: React.FC<NavigationProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const ref = useRef(null);
+
+  const pathname = usePathname();
+
+  console.log("router.pathname: ", pathname);
 
   useOnClickOutside(ref, (event) => {
     event.preventDefault();
@@ -37,6 +43,7 @@ export const NavigationSidebar: React.FC<NavigationProps> = ({ children }) => {
             <NavItem
               key={item.title}
               onPress={() => setSidebarOpen(false)}
+              isActive={pathname === item.route}
               {...item}
             />
           ))}
@@ -76,15 +83,19 @@ const NavItem = (props: {
   title: string;
   route: string;
   Icon: LucideIcon;
+  isActive?: boolean;
   onPress: () => void;
 }) => {
-  const { title, route, onPress, Icon } = props;
+  const { title, route, onPress, isActive, Icon } = props;
   return (
     <li>
       <Link
         href={route}
         onClick={onPress}
-        className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+        className={cn(
+          isActive && "bg-gray-100 dark:bg-gray-700",
+          "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+        )}
       >
         <Icon className="h-5 w-5" />
         <span className="flex-1 ml-3 whitespace-nowrap">{title}</span>
